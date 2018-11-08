@@ -1,5 +1,7 @@
 declare var sails: any;
 
+const oneDayMillis = 24 * 60 * 60 * 1000
+
 module.exports = {
   friendlyName: 'Fetchs user availability, times the service professional is \
     available to be booked.',
@@ -18,7 +20,7 @@ module.exports = {
     },
     end: {
       example: '2018-10-25T22:00:00Z',
-      defaultsTo: new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString()
+      defaultsTo: new Date(new Date().getTime() + oneDayMillis).toISOString()
     }
   },
   exits: {
@@ -34,13 +36,23 @@ module.exports = {
     }
   },
   fn: async function(inputs, exits) {
-    //const targetUserId = this.req.param('id')
     const {id, start, end} = inputs
+    // TODO implement Times
 
     //sails.log(`targetUserId: ${targetUserId}`)
     sails.log(`id: ${id}`)
     sails.log(`start: ${start}`)
     sails.log(`end: ${end}`)
+    const schedulePreferences = await sails.helpers.getSchedulingPreferences(id)
+    sails.log(`schedulePreferences: `, schedulePreferences)
+
+    const useAdvanceTime = true
+    // TODO do we need to implement the scheduling alert check now?
+    //    https://github.com/loconomics/loconomics/blob/master/database/stored-procedures/TestAlertAvailability.StoredProcedure.sql#L14
+    //    called here: https://github.com/loconomics/loconomics/blob/master/web/App_Code/LcCalendar.cs#L1748
+
+      // TODO implement GetUserTimeline as Helper?
+      // TODO implement GetTimelinePublicOutputFormat
 
     // const sql = await sails.helpers.mssql()
     // const profileData = await sql.query(``)
